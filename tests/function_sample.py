@@ -1,5 +1,4 @@
 from tidy3d import Medium, Structure, Geometry, Box
-
 from tidy3d_lambda import entrypoint
 
 

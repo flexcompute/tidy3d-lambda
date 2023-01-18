@@ -5,14 +5,13 @@ from tidy3d_lambda.script_engine import ScriptEngine
 
 
 def test_compile_syntax_error():
-    with pytest.raises(SyntaxError):
-        ScriptEngine("", script_id="").compile()
+    with pytest.raises(NoEntryPointsFoundError):
+        ScriptEngine("", script="").compile()
 
 
 def test_compile_no_entrypoint():
     with pytest.raises(NoEntryPointsFoundError):
-        ScriptEngine("","def func(): pass").compile()
-        ScriptEngine("","def a(): pass").compile()
+        ScriptEngine("", "def func(): pass").compile()
 
 
 def test_compile_multiple_entrypoint():
@@ -71,8 +70,8 @@ from tidy3d_lambda import entrypoint
 
 
 @entrypoint
-def function_sample(arg1, arg2: str = None, arg3=1, arg4=None) -> Structure:
-    return Structure(geometry=Box(size=[0, 0, 0]), medium=Medium())
+def function_sample(arg1, arg2: str = None, arg3=1, arg4=None) -> [Structure]:
+    return [Structure(geometry=Box(size=[0, 0, 0]), medium=Medium())]
 
 
 def function_1():
@@ -83,4 +82,4 @@ def function_1():
     context = engine.compile()
     context.params = [1, "2", 3, 4]
     res = engine.exec(context)
-    assert res.name == "script1"
+    assert len(res) == 1

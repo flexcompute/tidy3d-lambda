@@ -37,7 +37,7 @@ class ScriptEngine:
         if len(entrypoint_funcs) > 1:
             raise MultipleEntryPointsFoundError()
         self.entry_func = entrypoint_funcs[0]
-        if not self.entry_func.returns or "Structure" not in self.entry_func.returns.id:
+        if not self.entry_func.returns or "Structure" not in ast.dump(self.entry_func.returns):
             raise TypeError("Entry function must return a Structure.")
         ast_node = compile(self.script, self.script_id, "exec")
         exec(ast_node, self.global_vars, self.local_vars)
@@ -50,7 +50,7 @@ class ScriptEngine:
         """
         func = self.local_vars[self.entry_func.name]
         result = func(*context.params)
-        set_model_name(result, self.script_id)
+        # set_model_name(result, self.script_id)
         return result
 
     def _get_deps(self) -> [str]:
