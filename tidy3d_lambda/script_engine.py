@@ -37,8 +37,8 @@ class ScriptEngine:
         if len(entrypoint_funcs) > 1:
             raise MultipleEntryPointsFoundError()
         self.entry_func = entrypoint_funcs[0]
-        if not self.entry_func.returns or "Structure" not in ast.dump(self.entry_func.returns):
-            raise TypeError("Entry function must return a Structure.")
+        # if not self.entry_func.returns or "Structure" not in ast.dump(self.entry_func.returns) or "Source" not in ast.dump(self.entry_func.returns):
+        #     raise TypeError("Entry function must return a Structure or a Source.")
         ast_node = compile(self.script, self.script_id, "exec")
         exec(ast_node, self.global_vars, self.local_vars)
 
